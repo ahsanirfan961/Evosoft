@@ -562,84 +562,78 @@
         </div>
     </section>
     <section id="contact" class="ud-contact">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-xl-8 col-lg-7">
-                    <div class="ud-contact-content-wrapper">
-                        <div class="ud-contact-title">
-                            <span>CONTACT US</span>
-                            <h2>
-                                Let’s talk about <br>
-                                Love to hear from you!
-                            </h2>
-                        </div>
-                        <div id="alert" class="alert alert-dismissible fade show position-fixed d-none" role="alert"
-                            style="top: 1rem; right: 1rem; z-index: 500;">
-
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        <div class="ud-contact-info-wrapper">
-                            <div class="ud-single-info">
-                                <div class="ud-info-icon">
-                                    <i class="lni lni-map-marker"></i>
-                                </div>
-                                <div class="ud-info-meta">
-                                    <h5>Our Location</h5>
-                                    <p>F-8, Islamabad, Pakistan</p>
-                                </div>
-                            </div>
-                            <div class="ud-single-info">
-                                <div class="ud-info-icon">
-                                    <i class="lni lni-envelope"></i>
-                                </div>
-                                <div class="ud-info-meta">
-                                    <h5>How Can We Help?</h5>
-                                    <p><a href="mailto:evosofttech@gmail.com">evosofttech@gmail.com</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-xl-8 col-lg-7">
+                <div class="ud-contact-content-wrapper">
+                    <div class="ud-contact-title">
+                        <span>CONTACT US</span>
+                        <h2>
+                            Let’s talk about <br>
+                            Love to hear from you!
+                        </h2>
                     </div>
-                </div>
-                <div class="col-xl-4 col-lg-5">
-                    <div class="ud-contact-form-wrapper wow fadeInUp" data-wow-delay=".2s">
-                        <h3 class="ud-contact-form-title">Send us a Message</h3>
-                        <form class="ud-contact-form" id="contact-f" name="contact">
-                            <div class="ud-form-group">
-                                <label for="name">Full Name*</label>
-                                <input type="text" id="name" name="name" placeholder="John Doe" required
-                                    aria-required="true">
+                    <div id="alert" class="alert alert-dismissible fade show position-fixed d-none" role="alert"
+                        style="top: 1rem; right: 1rem; z-index: 500;">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div class="ud-contact-info-wrapper">
+                        <div class="ud-single-info">
+                            <div class="ud-info-icon">
+                                <i class="lni lni-map-marker"></i>
                             </div>
-                            <div class="ud-form-group d-none">
-                                <label for="email">Email*</label>
-                                <input type="email" name="email">
+                            <div class="ud-info-meta">
+                                <h5>Our Location</h5>
+                                <p>F-8, Islamabad, Pakistan</p>
                             </div>
-                            <div class="ud-form-group">
-                                <label for="eaddress">Email*</label>
-                                <input type="email" id="eaddress" name="eaddress" placeholder="example@yourmail.com"
-                                    required aria-required="true">
+                        </div>
+                        <div class="ud-single-info">
+                            <div class="ud-info-icon">
+                                <i class="lni lni-envelope"></i>
                             </div>
-                            <div class="ud-form-group">
-                                <label for="phone">Phone*</label>
-                                <input type="tel" id="phone" name="phone" placeholder="XXXXXXXXXX" required
-                                    aria-required="true">
+                            <div class="ud-info-meta">
+                                <h5>How Can We Help?</h5>
+                                <p><a href="mailto:evosofttech@gmail.com">evosofttech@gmail.com</a></p>
                             </div>
-                            <div class="ud-form-group">
-                                <label for="message">Message*</label>
-                                <textarea name="message" id="message" rows="1" placeholder="Type your message here"
-                                    required aria-required="true"></textarea>
-                            </div>
-                            <div class="ud-form-group mb-0">
-                                <button type="submit" class="ud-main-btn">
-                                    Send Message
-                                </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="ud-contact-form-wrapper wow fadeInUp" data-wow-delay=".2s">
+                    <h3 class="ud-contact-form-title">Send us a Message</h3>
+                    <form class="ud-contact-form" id="contact-f" name="contact" action="https://formspree.io/f/xjkbkoye" method="POST">
+                        <div class="ud-form-group">
+                            <label for="name">Full Name*</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe" required aria-required="true">
+                        </div>
+                        <div class="ud-form-group d-none">
+                            <label for="email">Email*</label>
+                            <input type="email" name="email">
+                        </div>
+                        <div class="ud-form-group">
+                            <label for="eaddress">Email*</label>
+                            <input type="email" id="eaddress" name="eaddress" placeholder="example@yourmail.com" required aria-required="true">
+                        </div>
+                        <div class="ud-form-group">
+                            <label for="phone">Phone*</label>
+                            <input type="tel" id="phone" name="phone" placeholder="XXXXXXXXXX" required aria-required="true">
+                        </div>
+                        <div class="ud-form-group">
+                            <label for="message">Message*</label>
+                            <textarea name="message" id="message" rows="1" placeholder="Type your message here" required aria-required="true"></textarea>
+                        </div>
+                        <div class="ud-form-group mb-0">
+                            <button type="submit" class="ud-main-btn">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+</section>
     <footer class="ud-footer wow fadeInUp" data-wow-delay=".15s">
         <div class="shape shape-1">
             <img src="assets/images/footer/shape-1.svg" alt="shape">
