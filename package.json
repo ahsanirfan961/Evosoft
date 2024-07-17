@@ -1,0 +1,12 @@
+{
+  "name": "evosoft",
+  "version": "1.0.0",
+  "description": "This is the website for our business company, Evosoft Tech",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahsan, Danial, Haris",
+  "license": "ISC"
+}
