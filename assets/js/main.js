@@ -1,4 +1,30 @@
-(function () {
+$('document').ready(()=>{
+  loadDependencies().then(() => {
+    addDependencies();
+  })
+});
+
+function loadHeader() {
+  return fetch('elements/header.html').then(response => response.text()).then(data => {
+    $('header').html(data);
+  }).catch(err => {
+    console.error(err);
+  });
+}
+
+function loadFooter() {
+  return fetch('elements/footer.html').then(response => response.text()).then(data => {
+    $('footer').html(data);
+  }).catch(err => {
+    console.error(err);
+  });
+}
+
+function loadDependencies() {
+  return Promise.all([loadHeader(), loadFooter()]);
+}
+
+function addDependencies() {
   "use strict";
 
   // ======= Sticky
@@ -12,15 +38,6 @@
     } else {
       ud_header.classList.remove("sticky");
     }
-
-    // hello
-
-    // // === logo change
-    // if (ud_header.classList.contains("sticky")) {
-    //   logo.src = "assets/images/logo/logo-2.svg";
-    // } else {
-    //   logo.src = "assets/images/logo/logo.svg";
-    // }
 
     // show or hide the back-top-top button
     const backToTop = document.querySelector(".back-to-top");
@@ -92,7 +109,7 @@
   document.querySelector(".back-to-top").onclick = () => {
     scrollTo(document.documentElement);
   };
-})();
+}
 
 // ==== for menu scroll
 const pageLink = document.querySelectorAll(".ud-menu-scroll");
