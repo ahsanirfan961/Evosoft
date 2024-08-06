@@ -59,7 +59,7 @@
                         <form class="ud-contact-form" id="verificationForm">
                             <div class="ud-form-group">
                                 <label for="cin">CIN*</label>
-                                <input type="text" name="cin" id="cin" placeholder="PIT/" required aria-required="true">
+                                <input type="text" name="cin" id="cin" placeholder="PIT/**" required aria-required="true">
                             </div>
                             <div class="ud-form-group mb-0">
                                 <button type="submit" class="ud-main-btn">Get Details</button>
@@ -82,7 +82,25 @@
     </section>
 
     <footer class="ud-footer wow fadeInUp" data-wow-delay=".15s">
-        <!-- Footer content goes here -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ud-footer-bottom">
+                        <ul class="ud-footer-bottom-left">
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                        </ul>
+                        <ul class="ud-footer-bottom-right">
+                            <li><a href="#">Follow Us:</a></li>
+                            <li><a href="#"><i class="lni lni-facebook-filled"></i></a></li>
+                            <li><a href="#"><i class="lni lni-twitter-filled"></i></a></li>
+                            <li><a href="#"><i class="lni lni-instagram-filled"></i></a></li>
+                            <li><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <a href="javascript:void(0)" class="back-to-top">
@@ -111,11 +129,10 @@
                 method: 'POST',
                 body: new URLSearchParams('certificateID=' + certificateID),
             })
-            .then(response => {
-                loader.style.display = 'none';
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
+                loader.style.display = 'none';
+                console.log('Response data:', data); // Log the response data for debugging
                 if (data.verified) {
                     detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is valid.</li>`;
                 } else {
