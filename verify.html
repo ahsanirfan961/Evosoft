@@ -139,31 +139,4 @@
     </script>
 </body>
 
-</html>...where the App script code is this function doGet(e) {
-  return HtmlService.createHtmlOutputFromFile('Index').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-}
-
-function verifyCertificate(certificateID) {
-  var url = 'https://docs.google.com/spreadsheets/d/1upcnt7Rm9sSIyCI-pRdRqwUDgKHu9emRNpZT_i0N_G8/edit?usp=sharing';
-  var ss = SpreadsheetApp.openByUrl(url);
-  var sheet = ss.getSheetByName('verify');
-  var getLastRow = sheet.getLastRow();
-  var verified = false;
-
-  for (var i = 1; i <= getLastRow; i++) {
-    if (sheet.getRange(i, 1).getValue() == certificateID) {
-      verified = true;
-      break;
-    }
-  }
-
-  return verified;
-}
-
-function doPost(e) {
-  var certificateID = e.parameter.certificateID;
-  var verified = verifyCertificate(certificateID);
-  
-  return ContentService.createTextOutput(JSON.stringify({verified: verified}))
-      .setMimeType(ContentService.MimeType.JSON);
-}
+</html>
