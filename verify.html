@@ -161,29 +161,7 @@
         });
     });
 </script>
-', {
-                method: 'POST',
-                body: new URLSearchParams('certificateID=' + certificateID),
-            })
-            .then(response => response.json())
-            .then(data => {
-                loader.style.display = 'none';
-                console.log('Response data:', data); // Log the response data for debugging
-                if (data.verified) {
-                    detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is valid.</li>`;
-                } else {
-                    detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is not valid.</li>`;
-                }
-                verifyDetailsBox.classList.remove('d-none');
-            })
-            .catch(error => {
-                loader.style.display = 'none';
-                console.error('Error:', error);
-                detailsList.innerHTML = `<li>Error verifying certificate ID: ${certificateID}. Please try again later.</li>`;
-                verifyDetailsBox.classList.remove('d-none');
-            });
-        });
-    </script>
+
 </body>
 
 </html>
