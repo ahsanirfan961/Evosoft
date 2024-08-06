@@ -125,43 +125,91 @@
             // Hide previous results
             verifyDetailsBox.classList.add('d-none');
 
-            fetch('<script>
-    document.getElementById('verificationForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        var certificateID = document.getElementById('cin').value;
-        var loader = document.getElementById('loader');
-        var verifyDetailsBox = document.getElementById('verify-details-box');
-        var detailsList = document.getElementById('details-list');
-        
-        // Show loader
-        loader.style.display = 'block';
-        // Hide previous results
-        verifyDetailsBox.classList.add('d-none');
-
-        fetch('https://script.google.com/macros/s/AKfycbw_w6LD3ZPCuyV8UfAj3WcbaH_1KtyrH95DQMQfpFYmcEc6fkpW3tpB3jdF0lwxKtk2qw/exec', {
-            method: 'POST',
-            body: new URLSearchParams('certificateID=' + certificateID),
-        })
-        .then(response => response.json())
-        .then(data => {
-            loader.style.display = 'none';
-            console.log('Response data:', data); // Log the response data for debugging
-            if (data.verified) {
-                detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is valid.</li>`;
-            } else {
-                detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is not valid.</li>`;
-            }
-            verifyDetailsBox.classList.remove('d-none');
-        })
-        .catch(error => {
-            loader.style.display = 'none';
-            console.error('Error:', error);
-            detailsList.innerHTML = `<li>Error verifying certificate ID: ${certificateID}. Please try again later.</li>`;
-            verifyDetailsBox.classList.remove('d-none');
+            fetch('https://script.google.com/macros/s/AKfycbwMNI-4yBYAYyMlvD7OZCLdzBileWnoBSOSiBDzkdbnyUOP-RXExjAcP0WjVd4-vQ0sgQ/exec', {
+                method: 'POST',
+                body: new URLSearchParams('certificateID=' + certificateID),
+            })
+            .then(response => response.json())
+            .then(data => {
+                loader.style.display = 'none';
+                console.log('Response data:', data); // Log the response data for debugging
+                if (data.verified) {
+                    detailsList.innerHTML = <li>Certificate ID: ${certificateID} is valid.</li>;
+                } else {
+                    detailsList.innerHTML = <li>Certificate ID: ${certificateID} is not valid.</li>;
+                }
+                verifyDetailsBox.classList.remove('d-none');
+            })
+            .catch(error => {
+                loader.style.display = 'none';
+                console.error('Error:', error);
+                detailsList.innerHTML = <li>Error verifying certificate ID: ${certificateID}. Please try again later.</li>;
+                verifyDetailsBox.classList.remove('d-none');
+            });
         });
-    });
-</script>
-
+    </script>
 </body>
+</html>......script is // Function to generate certificate IDs
+function generateCertificateIDs() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("verify");
+  var range = sheet.getRange("E2:E" + sheet.getLastRow());
+  var values = range.getValues();
+  
+  for (var i = 0; i < values.length; i++) {
+    if (!values[i][0]) {
+      var id = generateID();
+      values[i][0] = id;
+    }
+  }
+  
+  range.setValues(values);
+}
 
-</html>
+// Function to generate a random ID
+function generateID() {
+  var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var nums = "0123456789";
+  var id = "";
+  
+  for (var i = 0; i < 3; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  id += nums.charAt(Math.floor(Math.random() * nums.length));
+  for (var i = 0; i < 3; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  
+  return id;
+}
+
+// Function to handle GET requests
+function doGet(e) {
+  return HtmlService.createHtmlOutputFromFile('index.html').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// Function to verify the certificate ID
+function verifyCertificate(certificateID) {
+  var url = 'https://docs.google.com/spreadsheets/d/1upcnt7Rm9sSIyCI-pRdRqwUDgKHu9emRNpZT_i0N_G8/edit?usp=sharing';
+  var ss = SpreadsheetApp.openByUrl(url);
+  var sheet = ss.getSheetByName('verify');
+  var data = sheet.getRange(2, 5, sheet.getLastRow() - 1, 1).getValues(); // Adjust for your data layout
+  var verified = false;
+
+  for (var i = 0; i < data.length; i++) {
+    if (data[i][0] == certificateID) {
+      verified = true;
+      break;
+    }
+  }
+
+  return verified;
+}
+
+// Function to handle POST requests
+function doPost(e) {
+  var certificateID = e.parameter.certificateID;
+  var verified = verifyCertificate(certificateID);
+  
+  return ContentService.createTextOutput(JSON.stringify({verified: verified}))
+      .setMimeType(ContentService.MimeType.JSON);
+}
