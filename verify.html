@@ -35,7 +35,7 @@
 <body>
 
     <header class="ud-header">
-        <!-- Header content goes here -->
+
     </header>
 
     <section class="ud-page-banner">
@@ -53,6 +53,7 @@
     <section id="contact" class="ud-contact">
         <div class="container">
             <div class="row align-items-center">
+
                 <div class="col-xl-4 col-lg-5">
                     <div class="ud-contact-form-wrapper wow fadeInUp" data-wow-delay=".2s">
                         <h3 class="ud-contact-form-title">Enter Details</h3>
@@ -62,7 +63,9 @@
                                 <input type="text" name="cin" id="cin" placeholder="PIT/**" required aria-required="true">
                             </div>
                             <div class="ud-form-group mb-0">
-                                <button type="submit" class="ud-main-btn">Get Details</button>
+                                <button type="submit" class="ud-main-btn">
+                                    Get Details
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -82,33 +85,17 @@
     </section>
 
     <footer class="ud-footer wow fadeInUp" data-wow-delay=".15s">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="ud-footer-bottom">
-                        <ul class="ud-footer-bottom-left">
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Service</a></li>
-                        </ul>
-                        <ul class="ud-footer-bottom-right">
-                            <li><a href="#">Follow Us:</a></li>
-                            <li><a href="#"><i class="lni lni-facebook-filled"></i></a></li>
-                            <li><a href="#"><i class="lni lni-twitter-filled"></i></a></li>
-                            <li><a href="#"><i class="lni lni-instagram-filled"></i></a></li>
-                            <li><a href="#"><i class="lni lni-linkedin-original"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
     </footer>
 
     <a href="javascript:void(0)" class="back-to-top">
-        <i class="lni lni-chevron-up"></i>
+        <i class="lni lni-chevron-up"> </i>
     </a>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
     <script src="assets/js/wow.min.js"></script>
     <script src="assets/js/main.js"></script>
 
@@ -129,25 +116,54 @@
                 method: 'POST',
                 body: new URLSearchParams('certificateID=' + certificateID),
             })
-            .then(response => response.json())
-            .then(data => {
-                loader.style.display = 'none';
-                console.log('Response data:', data); // Log the response data for debugging
-                if (data.verified) {
-                    detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is valid.</li>`;
-                } else {
-                    detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is not valid.</li>`;
-                }
-                verifyDetailsBox.classList.remove('d-none');
-            })
-            .catch(error => {
-                loader.style.display = 'none';
-                console.error('Error:', error);
-                detailsList.innerHTML = `<li>Error verifying certificate ID: ${certificateID}. Please try again later.</li>`;
-                verifyDetailsBox.classList.remove('d-none');
-            });
+                .then(response => {
+                    loader.style.display = 'none';
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data); // Log the response data for debugging
+                    if (data.verified) {
+                        detailsList.innerHTML = <li>Certificate ID: ${certificateID} is valid.</li>;
+                    } else {
+                        detailsList.innerHTML = <li>Certificate ID: ${certificateID} is not valid.</li>;
+                    }
+                    verifyDetailsBox.classList.remove('d-none');
+                })
+                .catch(error => {
+                    loader.style.display = 'none';
+                    console.error('Error:', error);
+                    detailsList.innerHTML = <li>Error verifying certificate ID: ${certificateID}. Please try again later.</li>;
+                    verifyDetailsBox.classList.remove('d-none');
+                });
         });
     </script>
 </body>
 
-</html>
+</html>...where the App script code is this function doGet(e) {
+  return HtmlService.createHtmlOutputFromFile('Index').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function verifyCertificate(certificateID) {
+  var url = 'https://docs.google.com/spreadsheets/d/1upcnt7Rm9sSIyCI-pRdRqwUDgKHu9emRNpZT_i0N_G8/edit?usp=sharing';
+  var ss = SpreadsheetApp.openByUrl(url);
+  var sheet = ss.getSheetByName('verify');
+  var getLastRow = sheet.getLastRow();
+  var verified = false;
+
+  for (var i = 1; i <= getLastRow; i++) {
+    if (sheet.getRange(i, 1).getValue() == certificateID) {
+      verified = true;
+      break;
+    }
+  }
+
+  return verified;
+}
+
+function doPost(e) {
+  var certificateID = e.parameter.certificateID;
+  var verified = verifyCertificate(certificateID);
+  
+  return ContentService.createTextOutput(JSON.stringify({verified: verified}))
+      .setMimeType(ContentService.MimeType.JSON);
+}
