@@ -35,7 +35,7 @@
 <body>
 
     <header class="ud-header">
-
+        <!-- Add your header content here -->
     </header>
 
     <section class="ud-page-banner">
@@ -53,7 +53,6 @@
     <section id="contact" class="ud-contact">
         <div class="container">
             <div class="row align-items-center">
-
                 <div class="col-xl-4 col-lg-5">
                     <div class="ud-contact-form-wrapper wow fadeInUp" data-wow-delay=".2s">
                         <h3 class="ud-contact-form-title">Enter Details</h3>
@@ -71,9 +70,9 @@
                     </div>
                 </div>
                 <div class="col-xl-8 col-lg-7">
-                    <div id="verify_details" class="ud-contact-content-wrapper">
+                    <div id="verify_details" class="ud-contact-content-wrapper d-none">
                         <br>
-                        <div class="box-style mb-30" id="loader" style="display: none;">Loading...</div>
+                        <div class="box-style mb-30" id="loader"></div>
                         <div class="bg-ver box-style mb-30 d-none" id="verify-details-box">
                             <h3 class="mb-20 text-bold">Certificate Details</h3>
                             <ul class="parameters" id="details-list"></ul>
@@ -85,6 +84,15 @@
     </section>
 
     <footer class="ud-footer wow fadeInUp" data-wow-delay=".15s">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ud-footer-content">
+                        <p>&copy; 2024 Evosoft. All rights reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <a href="javascript:void(0)" class="back-to-top">
@@ -103,40 +111,47 @@
         document.getElementById('verificationForm').addEventListener('submit', function (e) {
             e.preventDefault();
             var certificateID = document.getElementById('cin').value;
-            var loader = document.getElementById('loader');
-            var verifyDetailsBox = document.getElementById('verify-details-box');
-            var detailsList = document.getElementById('details-list');
-            
-            // Show loader
-            loader.style.display = 'block';
-            // Hide previous results
-            verifyDetailsBox.classList.add('d-none');
-
-            fetch('https://script.google.com/macros/s/AKfycbwMNI-4yBYAYyMlvD7OZCLdzBileWnoBSOSiBDzkdbnyUOP-RXExjAcP0WjVd4-vQ0sgQ/exec', {
+            fetch('https://script.google.com/macros/s/AKfycbwbW7FocDZx8LA9hBP6_ZDjKUCtcQm_5xXiwm8uhtgq/dev', {
                 method: 'POST',
                 body: new URLSearchParams('certificateID=' + certificateID),
             })
-                .then(response => {
-                    loader.style.display = 'none';
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Response data:', data); // Log the response data for debugging
-                    if (data.verified) {
-                        detailsList.innerHTML = <li>Certificate ID: ${certificateID} is valid.</li>;
-                    } else {
-                        detailsList.innerHTML = <li>Certificate ID: ${certificateID} is not valid.</li>;
-                    }
-                    verifyDetailsBox.classList.remove('d-none');
-                })
-                .catch(error => {
-                    loader.style.display = 'none';
-                    console.error('Error:', error);
-                    detailsList.innerHTML = <li>Error verifying certificate ID: ${certificateID}. Please try again later.</li>;
-                    verifyDetailsBox.classList.remove('d-none');
-                });
+            .then(response => response.json())
+            .then(data => {
+                var verifyDetailsBox = document.getElementById('verify-details-box');
+                var detailsList = document.getElementById('details-list');
+                if (data.verified) {
+                    detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is valid.</li>`;
+                } else {
+                    detailsList.innerHTML = `<li>Certificate ID: ${certificateID} is not valid.</li>`;
+                }
+                verifyDetailsBox.classList.remove('d-none');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        function generateCertificateID() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 7; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedID = localStorage.getItem('certificateID');
+            if (!storedID) {
+                const newID = generateCertificateID();
+                localStorage.setItem('certificateID', newID);
+                console.log('Generated Certificate ID:', newID);
+            } else {
+                console.log('Stored Certificate ID:', storedID);
+            }
         });
     </script>
+
 </body>
 
 </html>
