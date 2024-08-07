@@ -74,6 +74,9 @@
             var certificateID = document.getElementById('cin').value;
             fetch('https://script.google.com/macros/s/AKfycbwbW7FocDZx8LA9hBP6_ZDjKUCtcQm_5xXiwm8uhtgq/dev', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 body: new URLSearchParams('certificateID=' + certificateID),
             })
             .then(response => response.json())
@@ -89,6 +92,34 @@
             })
             .catch(error => {
                 console.error('Error:', error);
+            });
+        });
+
+        // Smooth scroll for the back-to-top button
+        const backToTopButton = document.querySelector('.back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Fix for querySelector error
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
             });
         });
     </script>
